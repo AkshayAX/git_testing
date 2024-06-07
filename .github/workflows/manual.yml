@@ -54,13 +54,9 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: artifacts
-        path: |
-          main.py
-          *.txt
-          *.log
+        path: artifacts.zip
         retention-days: 5
         if-no-files-found: error
-        path-zip-artifacts: 'artifacts.zip'
     - name: download the articasts
       uses: actions/download-artifact@v3
       with:
