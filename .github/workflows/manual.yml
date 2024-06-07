@@ -50,6 +50,14 @@ jobs:
       run: |
         python main.py
         echo "Script executed successfully"
+    - name: upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: artifacts
+        path: |
+          main.py
+          *.txt
+          *.log
     
         
       
