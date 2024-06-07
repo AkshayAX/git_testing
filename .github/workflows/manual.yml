@@ -50,13 +50,18 @@ jobs:
       run: |
         python main.py
         echo "Script executed successfully"
-    - name: upload artifacts
+
+    - name: Create ZIP file
+      run: zip -r artifacts.zip main.py
+
+    - name: Upload artifacts
       uses: actions/upload-artifact@v3
       with:
         name: artifacts
         path: artifacts.zip
         retention-days: 5
         if-no-files-found: error
+        
     - name: download the articasts
       uses: actions/download-artifact@v3
       with:
