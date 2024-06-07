@@ -58,6 +58,24 @@ jobs:
           main.py
           *.txt
           *.log
+    - name: download the articasts
+      uses: actions/download-artifact@v3
+      with:
+        name: artifacts
+
+    - name: configure s3 bucket
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACESS_KEY }}
+        aws-region: Asia Pacific (Mumbai) ap-south-1
+
+    - name: deploy to aws
+      run: |
+        aws s3 cp artifacts.zip s3://axsubucket/artifacts.zip
+      
+
+          
     
         
       
