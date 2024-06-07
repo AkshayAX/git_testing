@@ -1,6 +1,7 @@
 import numpy as np
 from typing import List
 
+# comments added
 class calculation:
     def __init__(self,input_array:List):
         self.inputs = input_array
