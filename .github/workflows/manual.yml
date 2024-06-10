@@ -53,6 +53,9 @@ jobs:
       run: |
         python main.py
         echo "Script executed successfully"
+    - name: run tests
+      run: |
+        pytest
 
     - name: Create ZIP file
       run: zip -r artifacts.zip main.py
