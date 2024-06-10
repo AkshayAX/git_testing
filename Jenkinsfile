@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     parameters {
-        string(name:"input",defaultValue:"World",description:"Simple entry level script")
+        string(name: "input", defaultValue: "World", description: "Simple entry level script")
     }
 
     environment {
@@ -11,22 +11,19 @@ pipeline {
     }
 
     stages {
-        stage("Greet")
-        {
+        stage("Greet") {
             steps {
                 echo "Hello ${params.input}, how are you"
             }
         }
 
-        stage("Checkout")
-        {
+        stage("Checkout") {
             steps {
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/AkshayAX/git_testing.git']])
+                git branch: 'main', url: 'https://github.com/AkshayAX/git_testing.git'
             }
         }
 
         stage("Setup Python") {
-
             steps {
                 sh 'python3 -m pip install --upgrade pip'
             }
@@ -52,21 +49,18 @@ pipeline {
         }
 
         stage("Create zip file") {
-
             steps {
                 sh 'zip -r artifacts.zip main.py'
             }
         }
 
-        stage("Arhive artifacts") {
-            
+        stage("Archive artifacts") {
             steps {
                 archiveArtifacts artifacts: 'artifacts.zip', fingerprint: true, followSymlinks: false
             }
         }
 
         stage("Upload to s3") {
-            
             steps {
                 withAWS(region: 'ap-south-1', credentials: 'aws-credentials') {
                     s3Upload(file: 'artifacts.zip', bucket: 'axsubucket', path: 'artifacts.zip')
