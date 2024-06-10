@@ -6,8 +6,8 @@ pipeline {
     }
 
     environment {
-        AWS_ACCESS_KEY_ID = credentials('aws-access-key-id')
-        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
+        AWS_ACCESS_KEY_ID = "no man"
+        AWS_SECRET_ACCESS_KEY = "no land"
     }
 
     stages {
@@ -59,5 +59,13 @@ pipeline {
                 archiveArtifacts artifacts: 'artifacts.zip', fingerprint: true, followSymlinks: false
             }
         }
+
+        stage("Upload to s3") {
+            steps {
+                withAWS(region: 'ap-south-1', credentials: 'aws-access-key-id') {
+                    s3Upload(file: 'artifacts.zip', bucket: 'axsubucket', path: 'artifacts.zip')
+                }
+            }
     }
+}
 }
