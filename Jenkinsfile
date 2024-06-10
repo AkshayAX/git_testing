@@ -6,8 +6,9 @@ pipeline {
     }
 
     environment {
-        AWS_ACCESS_KEY_ID = "no man"
-        AWS_SECRET_ACCESS_KEY = "no land"
+        AWS_ACCESS_KEY_ID = 'no man'
+        AWS_SECRET_ACCESS_KEY = 'no land'
+        VENV_DIR = 'venv'
     }
 
     stages {
@@ -25,26 +26,39 @@ pipeline {
 
         stage("Setup Python") {
             steps {
-                sh 'python3 -m pip install --upgrade pip'
+                sh '''
+                    python3 -m venv $VENV_DIR
+                    . $VENV_DIR/bin/activate
+                    python -m pip install --upgrade pip
+                '''
             }
         }
 
         stage("Install Dependencies") {
             steps {
-                sh 'pip install -r requirements.txt'
+                sh '''
+                    . $VENV_DIR/bin/activate
+                    pip install -r requirements.txt
+                '''
             }
         }
 
         stage("Run script") {
             steps {
-                sh 'python main.py'
-                echo "Script executed successfully"
+                sh '''
+                    . $VENV_DIR/bin/activate
+                    python main.py
+                    echo "Script executed successfully"
+                '''
             }
         }
 
         stage("Run Tests") {
             steps {
-                sh 'pytest'
+                sh '''
+                    . $VENV_DIR/bin/activate
+                    pytest
+                '''
             }
         }
 
