@@ -59,13 +59,5 @@ pipeline {
                 archiveArtifacts artifacts: 'artifacts.zip', fingerprint: true, followSymlinks: false
             }
         }
-
-        stage("Upload to s3") {
-            steps {
-                withAWS(region: 'ap-south-1', credentials: 'aws-credentials') {
-                    s3Upload(file: 'artifacts.zip', bucket: 'axsubucket', path: 'artifacts.zip')
-                }
-            }
-        }
     }
 }
